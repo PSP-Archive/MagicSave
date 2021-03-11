@@ -1,0 +1,49 @@
+TARGET			=	MagicSave
+PRX_EXPORTS		=	exports.exp
+
+PSP_FW_VERSION		=	380
+USE_KERNEL_LIBC		=	1
+USE_KERNEL_LIBS		=	1
+
+PSP_NID_RESOLVE		= 	
+
+DEBUG			=	0
+
+
+OBJS			=	exports.o		\
+				MS_PLUGIN_LIB.o 	\
+				./include/psf.o		\
+				./include/hook.o	\
+				./include/syslibc.o	\
+				common.o		\
+				main.o			\
+				func.o			\
+				menu.o			\
+				plugin.o		\
+				cfg.o			\
+				log.o
+
+
+
+ifneq ($(PSP_NID_RESOLVE),)
+OBJS			+=	./NID_Resolve/$(PSP_NID_RESOLVE).o
+endif
+
+
+
+INCDIR			=	./include
+CFLAGS			=	-Os -G 0 -Wall -fno-strict-aliasing -D_DEBUG=$(DEBUG)
+ASFLAGS			=	$(CFLAGS)
+
+
+LIBDIR			= 	
+LDFLAGS			=	-mno-crt0 -nostartfiles
+LIBS			=	-lini -lmenue
+
+
+
+PSPSDK=$(shell psp-config --pspsdk-path)
+include $(PSPSDK)/lib/build_prx.mak
+
+#all:
+#	psp-build-exports -s $(PRX_EXPORTS) 
